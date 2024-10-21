@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { RegisterUserDto } from "../../domain";
 
 export class AuthController{
 
@@ -6,7 +7,10 @@ export class AuthController{
     constructor(){}
 
     register = (req : Request, res: Response) => {
-        res.json('Register user')
+        const [error, registerDto] = RegisterUserDto.create(req.body)
+        if( error ) return res.status(400).json({ error })
+
+        res.json(registerDto)
     }
     loginUser = (req : Request, res: Response) => {
         res.json('Login user')
