@@ -23,8 +23,11 @@ export class AuthService {
             user.password = bcryptAdapter.hash(registerUserDto.password);
             await user.save();
             const { password, ...userEntity } = UserEntity.fromObject(user);
+            const token = await JwtAdapter.generateToken({ id: user.id })
 
-            return { user: userEntity, token: "ABC" };
+            if( !token ) throw CustomError.internalServer('Error while creating JWT')
+
+            return { user: userEntity, token };
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }
