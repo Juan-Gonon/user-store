@@ -78,7 +78,7 @@ export class AuthService {
         const html = `
         <h1> Validate your email </h1>
         <p> Click on the following link to validate your email </p>
-        <a href="${link}" >Validate your email: ${email} </a>
+        <a href=${link} >Validate your email: ${email} </a>
         `
 
         const options = {

@@ -19,7 +19,7 @@ export class AuthRoutes {
     // Definir las rutas
     router.post('/login', controller.loginUser );
     router.post('/register', controller.register );
-    router.post('/validate-email/:token', controller.validateEmail );
+    router.get('/validate-email/:token', controller.validateEmail );
 
     
 
