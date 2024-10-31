@@ -14,17 +14,20 @@ export class CategoryController {
     };
 
     createCategory = async (req: Request, res: Response) => {
-      const [error, createCategoryDto ] = CreateCategoryDto.create(req.body)
+        const [error, createCategoryDto] = CreateCategoryDto.create(req.body);
 
-      if(error) res.status(400).json(error)
+        if (error) res.status(400).json(error);
 
-      this.categoryService.createCategory(createCategoryDto!, req.body.user)
-      .then((category) => res.status(201).json(category))
-      .catch((error) => this.handleError(error, res) )
+        this.categoryService
+            .createCategory(createCategoryDto!, req.body.user)
+            .then((category) => res.status(201).json(category))
+            .catch((error) => this.handleError(error, res));
     };
 
     getCategories = async (req: Request, res: Response) => {
-
-      res.json(req.body)
+        this.categoryService
+            .getCategories()
+            .then((categories) => res.json(categories))
+            .catch((error) => this.handleError(error, res));
     };
 }
