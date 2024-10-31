@@ -9,7 +9,7 @@ export class AuthMiddleware{
       const authorization = req.header('Authorization')
 
       if (!authorization) return res.status(401).json({error: 'No token provided'})
-      if (!authorization.startsWith('Barer ')) return res.status(401).json({error: 'Invalid Bearer Token'})
+      if (!authorization.startsWith('Bearer ')) return res.status(401).json({error: 'Invalid Bearer Token'})
 
       const token = authorization.split(' ').at(1) || ''
 

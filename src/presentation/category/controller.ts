@@ -17,11 +17,11 @@ export class CategoryController {
 
       if(error) res.status(400).json(error)
 
-      res.json(createCategoryDto)
+        res.json(req.body)
     };
 
     getCategories = async (req: Request, res: Response) => {
 
-      res.json('Get Category')
+      res.json(req.body)
     };
 }
