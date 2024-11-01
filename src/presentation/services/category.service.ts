@@ -32,10 +32,17 @@ export class CategoryService {
     async getCategories(paginationDto: PaginationDto){
       const { page, limit } = paginationDto
       try {
-         const total = await CategoryModel.countDocuments()
-         const categories = await CategoryModel.find()
+         // const total = await CategoryModel.countDocuments()
+         // const categories = await CategoryModel.find()
+         //    .skip( (page - 1) * limit)
+         //    .limit(limit)
+
+         const [ total, categories ] = await Promise.all([
+            CategoryModel.countDocuments(),
+            CategoryModel.find()
             .skip( (page - 1) * limit)
             .limit(limit)
+         ])
 
          if(!categories) throw CustomError.badRequest('Categories is empty')
          
