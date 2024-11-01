@@ -32,19 +32,25 @@ export class CategoryService {
     async getCategories(paginationDto: PaginationDto){
       const { page, limit } = paginationDto
       try {
+         const total = await CategoryModel.countDocuments()
          const categories = await CategoryModel.find()
             .skip( (page - 1) * limit)
             .limit(limit)
 
          if(!categories) throw CustomError.badRequest('Categories is empty')
          
-         return categories.map((category) => {
-            return {
-               id: category.id,
-               name: category.name,
-               available: category.available
-            }
-         })
+         return {
+            page,
+            limit,
+            total,
+            categories: categories.map((category) => {
+               return {
+                  id: category.id,
+                  name: category.name,
+                  available: category.available
+               }
+            })
+         }
          
       } catch (error) {
          throw CustomError.internalServer(`${error}`)
