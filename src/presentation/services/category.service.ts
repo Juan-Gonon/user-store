@@ -1,5 +1,5 @@
 import { CategoryModel } from "../../data";
-import { CreateCategoryDto, CustomError, UserEntity } from "../../domain";
+import { CreateCategoryDto, CustomError, PaginationDto, UserEntity } from "../../domain";
 
 export class CategoryService {
     // DI
@@ -29,9 +29,12 @@ export class CategoryService {
       }
     }
 
-    async getCategories(){
+    async getCategories(paginationDto: PaginationDto){
+      const { page, limit } = paginationDto
       try {
          const categories = await CategoryModel.find()
+            .skip( (page - 1) * limit)
+            .limit(limit)
 
          if(!categories) throw CustomError.badRequest('Categories is empty')
          
