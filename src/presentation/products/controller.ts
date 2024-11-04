@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { CustomError, PaginationDto } from '../../domain';
+import { CreateProductDto, CustomError, PaginationDto } from '../../domain';
 
 export class ProductsController{
 
@@ -11,6 +11,9 @@ export class ProductsController{
   };
 
   createProduct = (req: Request, res: Response) => {
+   const [error, createProductDto] = CreateProductDto.create(req.body)
+
+   if(error) return res.status(400).json( { error })
 
    return res.json({ product: 'CreateProduct' })
   }
