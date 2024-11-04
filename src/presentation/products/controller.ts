@@ -1,7 +1,10 @@
 import { Request, Response } from 'express'
 import { CreateProductDto, CustomError, PaginationDto } from '../../domain';
+import { ProductService } from '../services';
 
 export class ProductsController{
+
+   constructor(private readonly productService: ProductService){}
 
    private handleError = (error: unknown, res: Response) => {
       if (error instanceof CustomError) {
@@ -15,7 +18,10 @@ export class ProductsController{
 
    if(error) return res.status(400).json( { error })
 
-   return res.json({ product: 'CreateProduct' })
+   this.productService.createProduct(createProductDto!)
+   .then((product) => res.status(201).json(product))
+   .catch((error) => this.handleError(error, res))
+
   }
 
    getProducts = (req: Request, res: Response) => {
@@ -24,7 +30,10 @@ export class ProductsController{
 
       if(error) return res.status(400).json({ error })
 
-      return res.json({ products: 'GET PRODUCTS', paginationDto})
+      
+   this.productService.getProducts(paginationDto!)
+   .then((products) => res.status(201).json(products))
+   .catch((error) => this.handleError(error, res))
    }
 
 }
