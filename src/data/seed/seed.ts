@@ -1,5 +1,6 @@
 import { envs } from "../../config"
-import { MongoDatabase } from "../mongo/mongo-database"
+import { CategoryModel, MongoDatabase, ProductModel, UserModel } from "../mongo"
+import { seedData } from "./data"
 
 ( async () => {
 
@@ -15,13 +16,42 @@ import { MongoDatabase } from "../mongo/mongo-database"
 
 })()
 
+const randomBetweenAndX = (x: number) => {
+   return Math.floor(Math.random() * x)
+}
+
 
 async function main(){
 
+   // 0. Borrar todo
+   await Promise.all([
+      UserModel.deleteMany(),
+      CategoryModel.deleteMany(),
+      ProductModel.deleteMany()
+   ])
+
    // 1. Crear usuarios
+   const users = await UserModel.insertMany(seedData.users)
 
    // 2. Crear Categories
+   const categories = await CategoryModel.insertMany(seedData.categories.map((category) => {
+
+      return {
+         ...category,
+         user: users[0]._id
+      }
+   }))
 
    // 3. Crear Products
+   const products = await ProductModel.insertMany(
+      seedData.products.map((product) => {
+
+         return {
+            ...product,
+            user: users[randomBetweenAndX(seedData.users.length - 1)]._id,
+            category: categories[randomBetweenAndX(seedData.categories.length - 1)]._id
+         }
+      })
+   )
 
 }
