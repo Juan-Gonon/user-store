@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { mongo } from "mongoose"
 
 interface Options {
     mongoUrl: string
@@ -21,5 +21,9 @@ export class MongoDatabase {
             console.log('Mongo connection error')
             throw error
         }
+    }
+
+    static async disconnect () {
+        await mongoose.disconnect()
     }
 }
