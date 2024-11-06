@@ -13,6 +13,7 @@ export class FileUploadController {
     };
 
     uploadFile = (req: Request, res: Response) => {
+        console.log(req.files);
         res.json("UploadFile");
     };
 
