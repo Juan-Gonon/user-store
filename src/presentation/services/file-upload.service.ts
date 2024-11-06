@@ -1,10 +1,11 @@
 import { UploadedFile } from "express-fileupload";
 import path from "path";
 import fs from 'fs'
+import { Uuid } from "../../config";
 
 export class FileUploadService {
     // DI
-    constructor() {}
+    constructor(private readonly uuid = Uuid.v4) {}
 
     private checkFolder(folderPath: string) {
         if(!fs.existsSync(folderPath)){
@@ -17,8 +18,10 @@ export class FileUploadService {
          const fileExtension = file.mimetype.split('/').at(1)
          const destination = path.resolve(__dirname, '../../../', folder)
          this.checkFolder(destination)
+         const fileName = `${this.uuid()}.${fileExtension}`
+         file.mv(`${destination}/${fileName}`)
 
-         file.mv(destination + `/mi-imagen.${fileExtension}`)
+         return { fileName }
          
       } catch (error) {
          console.log(error)
